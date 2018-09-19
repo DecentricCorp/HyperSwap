@@ -16,7 +16,7 @@ var identity =  {id: randomId(), key: randomId()}
 var mesh = Mesh('./Bootstrap/demo.db', null, identity)
 var db = mesh.db
 mesh.on('ready', function () {
-    var key = db.key.toString('hex')
+    var key = 'bd5f536b5672b4b17660a60961cc507c4be1de1866bcbb964c63ffd35a737347'//db.key.toString('hex')
     console.log("Key", key)
 
     mesh = Mesh('./peerList/demo.db', key, identity)

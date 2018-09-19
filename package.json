@@ -11,6 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "hyperdb-mesh": "0.0.3",
+    "hyperdiscovery": "^8.0.0",
+    "hyperdrive": "^9.14.0",
+    "hyperfeed": "^2.4.1",
+    "hyperlog": "^4.12.1",
+    "hyperswarm": "^1.1.0",
+    "request": "^2.88.0",
     "ws": "^6.0.0"
   }
 }

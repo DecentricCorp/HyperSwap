@@ -14,7 +14,7 @@ mesh.on('ready', function () {
   })
   db.watch('/peers/', function () {
     setTimeout(()=>{
-      process.exit(0)
+      //process.exit(0)
     }, 100)
   })
 })
