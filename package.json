@@ -1,0 +1,16 @@
+{
+  "name": "hyperswap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "peerb.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node list.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "hyperdb-mesh": "0.0.3",
+    "ws": "^6.0.0"
+  }
+}
