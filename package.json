@@ -5,7 +5,7 @@
   "main": "peerb.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node list.js"
+    "start": "node listen.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,9 @@
     "hyperlog": "^4.12.1",
     "hyperswarm": "^1.1.0",
     "request": "^2.88.0",
+    "signalhub": "^4.9.0",
+    "webrtc-swarm": "^2.9.0",
+    "wrtc": "^0.2.0",
     "ws": "^6.0.0"
   }
 }
