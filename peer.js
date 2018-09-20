@@ -3,6 +3,7 @@ var key = '51f0304d4494cf220762eac44ea61ba37f342ebe173dc04f8e3d2829f1b36934'
 var randomId = function(){
     return Math.floor(Math.random() * 190000) + 1
 }
+var records = []
 var options = { recursive: true,reverse: true }
 var identity =  {id: randomId(), key: randomId()}
 var mesh = Mesh('./randomPeer/demo.db', key, identity)
@@ -17,10 +18,15 @@ mesh.on('ready', function () {
       })
     }
   }) */
-  insert()
+  listRecords((arr)=>{
+    records = arr
+    insert()
+  })
+  
   db.watch('/peers/', function () {
     listRecords((arr)=>{
-      console.log(arr)
+      console.log(arr.filter(comparer(records))[0])
+      records = arr
     })
     /* setTimeout(()=>{
       //process.exit(0)
@@ -31,6 +37,13 @@ mesh.on('ready', function () {
     }, 1000) */
   })
 })
+function comparer(otherArray){
+  return function(current){
+    return otherArray.filter(function(other){
+      return other.value == current.value && other.display == current.display
+    }).length == 0;
+  }
+}
 function listRecords(cb) {
     db.list(options, (err, data)=>{
         var arr = data.map((item) => { return { key: item[0].key, value: item[0].value } })
