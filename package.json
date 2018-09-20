@@ -12,7 +12,7 @@
   "dependencies": {
     "hyperdb-mesh": "0.0.3",
     "ws": "^6.0.0"
-  }, 
+  },
   "old-deps": {
     "hyperdiscovery": "^8.0.0",
     "hyperdrive": "^9.14.0",
