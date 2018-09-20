@@ -3,3 +3,4 @@ node_modules
 Bootstrap
 peerList
 .vscode
+.DS_Store

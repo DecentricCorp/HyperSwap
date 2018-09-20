@@ -9,17 +9,21 @@ sox.wss.on('connection', function connection(ws) {
         }))
     }
 })
+var key = '51f0304d4494cf220762eac44ea61ba37f342ebe173dc04f8e3d2829f1b36934'
 var randomId = function(){
     return Math.floor(Math.random() * 190000) + 1
 }
 var identity =  {id: randomId(), key: randomId()}
-var mesh = Mesh('./Bootstrap/demo.db', null, identity)
+var mesh = Mesh('/var/dat/storage/Bootstrap/demo.db', null, identity)
 var db = mesh.db
+
 mesh.on('ready', function () {
-    var key = 'bd5f536b5672b4b17660a60961cc507c4be1de1866bcbb964c63ffd35a737347'//db.key.toString('hex')
+    console.log("New key", db.key.toString('hex'))
+    //var key = db.key.toString('hex')
+    
     console.log("Key", key)
 
-    mesh = Mesh('./peerList/demo.db', key, identity)
+    mesh = Mesh('/var/dat/storage/peerList/demo.db', key, identity)
     db = mesh.db
     var options = { recursive: true,reverse: true }
     mesh.on('ready', function () {  

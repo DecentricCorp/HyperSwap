@@ -1,5 +1,5 @@
 const Mesh = require('hyperdb-mesh')
-var key = 'bd5f536b5672b4b17660a60961cc507c4be1de1866bcbb964c63ffd35a737347'
+var key = '51f0304d4494cf220762eac44ea61ba37f342ebe173dc04f8e3d2829f1b36934'
 var randomId = function(){
     return Math.floor(Math.random() * 190000) + 1
 }
@@ -8,7 +8,7 @@ var mesh = Mesh('./randomPeer/demo.db', key, identity)
 var db = mesh.db
 
 mesh.on('ready', function () {
-  console.log('peer A key', db.key.toString('hex'))
+  console.log('Bootstrap key', db.key.toString('hex'))
   db.put('/peers/'+identity.id, identity.key, function (err) {
     console.log("Stored ", identity)
   })
