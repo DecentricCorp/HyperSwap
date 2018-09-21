@@ -112,7 +112,7 @@ var randomId = function(){
 var records = []
 var options = { recursive: true, reverse: true }
 var identity =  {id: randomId(), key: randomId()}
-var mesh = Mesh('./Databases/peer.db', key, identity)
+var mesh = Mesh('./Databases/peer2.db', key, identity)
 var db = mesh.db
 
 mesh.on('ready', function () {
