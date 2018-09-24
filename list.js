@@ -42,7 +42,7 @@ mesh.on('ready', function () {
                 console.log("All records", arr)
             })
         })
-        db.watch('/peers/', function () {
+        db.watch('/', function () {
             listRecords((arr)=>{
                 //console.log("old", records.length, JSON.stringify(records))
                 //console.log("new", arr.length, JSON.stringify(arr))

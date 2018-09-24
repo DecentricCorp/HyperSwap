@@ -5,12 +5,28 @@ const jsonParser = bodyParser.json()
 const app = express()
 const port = 4000
 
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.options("/*", function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  res.send(200);
+});
+
 app.get('/', (req, res) => {
   listRecords(arr=>{
     res.send(arr)
   })
 })
-
+app.get('/key', (req, res)=>{
+  res.send({key: db.local.key.toString('hex')})
+})
 app.get('/forsale', (req, res)=>{
   listPrefixedRecords('peers/', (records)=>{
     var peers = records.map(item=>{
@@ -21,19 +37,35 @@ app.get('/forsale', (req, res)=>{
       }
     })
     var template = JSON.parse(JSON.stringify(peers))
-    getItems(0, peers, template, (populated)=>{
+    getItems(0, peers, template, 'forsale', (populated)=>{
       res.send(populated)
     })
-    function getItems(index, arr, template, cb){
-      var peer = arr[index].peer
-      listPrefixedRecords(peer + '/forsale', (records)=>{
-        template[index].items = records
+    function getOfferItems(index, arr, template, cb) {
+      var item = arr[index]
+      list(item.key.split('/')[0]+'/offer/', (record)=>{
+        
+        console.log("RECORD",record, item.key.split('/')[0])
+        template[index].offer = record
         if (index === arr.length -1) {
           return cb(template)
         } else {
-          return getItems(index + 1, arr, template, cb)
+          return getOfferItems(index + 1, arr, template, cb)
         }
       })      
+    }
+    function getItems(index, arr, template, table, cb){
+      var peer = arr[index].peer
+      listPrefixedRecords(peer + '/' + table, (records)=>{
+        var offersTemplate = JSON.parse(JSON.stringify(records))
+        getOfferItems(0, records, offersTemplate, (offers)=>{
+          template[index].forsale = offers        
+        if (index === arr.length -1) {
+          return cb(template)
+        } else {
+          return getItems(index + 1, arr, template, table, cb)
+        }
+        })
+      })
     }
   })
 })
@@ -54,6 +86,14 @@ app.get('/:table/:key', (req, res)=>{
 
 app.delete('/:table/:key', (req, res) => {
   var localKey = db.local.key.toString('hex')
+  var recordKey = localKey + '/' + req.params.table + '/' + req.params.key
+  del(recordKey, ()=>{
+    res.send({success: true})
+  })
+})
+
+app.delete('/:localkey/:table/:key', (req, res) => {
+  var localKey = req.params.localkey
   var recordKey = localKey + '/' + req.params.table + '/' + req.params.key
   del(recordKey, ()=>{
     res.send({success: true})
@@ -189,6 +229,22 @@ function register(cb){
 function del(key, cb){
   db.del(key, ()=>{
     return cb()
+  })
+}
+
+function list(key, cb) {
+  db.list(key, options, (err, data)=>{
+    var arr = data.map((item) => { 
+      console.log("Item", item)
+      var value = item[0].value
+      console.log("-------value", value)
+      if (typeof(value)==='string') {
+        try { value = JSON.parse(value)} catch(err){ }
+      }
+      return { key: item[0].key, value: value } 
+    })
+    console.log("_____----Arr", arr)
+    return cb(arr)
   })
 }
 

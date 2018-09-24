@@ -60,6 +60,14 @@ app.delete('/:table/:key', (req, res) => {
   })
 })
 
+app.delete('/:localkey/:table/:key', (req, res) => {
+  var localKey = req.params.localkey
+  var recordKey = localKey + '/' + req.params.table + '/' + req.params.key
+  del(recordKey, ()=>{
+    res.send({success: true})
+  })
+})
+
 app.delete('/', (req, res) => {
   listRecords(arr=>{
     delAll(0, arr, ()=>{
