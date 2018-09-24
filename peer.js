@@ -41,6 +41,9 @@ app.get('/forsale', (req, res)=>{
       res.send(populated)
     })
     function getOfferItems(index, arr, template, cb) {
+      if (arr.length < 1) {
+        return cb(template)
+      }
       var item = arr[index]
       list(item.key.split('/')[0]+'/offer/', (record)=>{
         

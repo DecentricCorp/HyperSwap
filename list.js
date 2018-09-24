@@ -78,4 +78,3 @@ function socketSend(data, cb) {
 function randomId(){
     return Math.floor(Math.random() * 190000) + 1
 }
-

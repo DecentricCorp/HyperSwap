@@ -24,29 +24,44 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css" />
     <script>
-        getMyKey((myKey)=>{
-            console.log(myKey)
-            $('.menu .item').tab()
-            var source = document.getElementById("entry-template").innerHTML
-            var template = Handlebars.compile(source)
-            var context = {title: "My New Post", body: "This is my first post!"};
-            var html = template(context);
-            $(".handlebars").html(html)
-            getForSale((items)=>{
-                console.log(items)
+        register((registration)=>{
+            getMyKey((myKey)=>{
+                console.log(myKey)
+                $('.menu .item').tab()
+                var source = document.getElementById("entry-template").innerHTML
+                var template = Handlebars.compile(source)
+                var context = {title: "My New Post", body: "This is my first post!"};
+                var html = template(context);
+                $(".handlebars").html(html)
+                getForSale((items)=>{
+                    console.log('forsale', items)
+                    getWalletKey((key)=>{
+                        console.log('key', key)
+                    })
+                })
             })
         })
         
+        function register(cb){
+            $.get( "http://127.0.0.1:3000/register", function(data) {
+                return cb(data)
+            })
+        }
         function getMyKey(cb){
-            $.get( "http://127.0.0.1:4000/key", function(data) {
+            $.get( "http://127.0.0.1:3000/dbkey", function(data) {
                 return cb(data)
             })
         } 
         function getForSale(cb){
-            $.get( "http://127.0.0.1:4000/forsale", function(data) {
+            $.get( "http://127.0.0.1:3000/forsale", function(data) {
                 return cb(data)
             })
-        }  
+        }
+        function getWalletKey(cb){
+            $.get( "http://127.0.0.1:3000/getKeys", function(data) {
+                return cb(data)
+            })
+        }
     </script>
     <script id="entry-template" type="text/x-handlebars-template">
         <div class="entry">
