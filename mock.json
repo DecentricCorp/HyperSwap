@@ -1,0 +1,77 @@
+[
+    {
+        "peer": "sally",
+        "forsale": [
+            {
+                "key": "sally/forsale/EMB00000000000",
+                "value": {
+                    "emblem": "EMB00000000000"
+                },
+                "offer": [
+                    {
+                        "key": "sally/offer/EMB00000000000",
+                        "value": {
+                            "emblem": "EMB00000000003",
+                            "peer": "alice"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "peer": "bob",
+        "forsale": [
+            {
+                "key": "bob/forsale/EMB00000000001",
+                "value": {
+                    "emblem": "EMB00000000001"
+                },
+                "offer": [
+                    {
+                        "key": "bob/offer/EMB00000000001",
+                        "value": {
+                            "emblem": "EMB00000000003",
+                            "peer": "alice"
+                        }
+                    }
+                ]
+            },
+            {
+                "key": "bob/forsale/EMB00000000002",
+                "value": {
+                    "emblem": "EMB00000000002"
+                },
+                "offer": [
+                    {
+                        "key": "bob/offer/EMB00000000002",
+                        "value": {
+                            "emblem": "EMB00000000003",
+                            "peer": "alice"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "peer": "alice",
+        "forsale": [
+            {
+                "key": "alice/forsale/EMB00000000003",
+                "value": {
+                    "emblem": "EMB00000000003"
+                },
+                "offer": [
+                    {
+                        "key": "alice/offer/EMB00000000003",
+                        "value": {
+                            "emblem": "EMB00000000001",
+                            "peer": "bob"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]

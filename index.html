@@ -1,68 +1,9 @@
 <html>
   <head>
-    <script>
-        var ws = new WebSocket('ws://35.202.3.15:40510');
-        // event emmited when connected
-        ws.onopen = function () {
-        console.log('websocket is connected ...')
-        // sending a send event to websocket server
-        ws.send('connected')
-        }
-        // event emmited when receiving message 
-        ws.onmessage = function (ev) {
-        var data
-        try {
-            data = JSON.parse(ev.data)
-        } catch (err) {
-            data = ev.data
-        }
-        console.log(data)
-        }
-    </script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css" />
-    <script>
-        register((registration)=>{
-            getMyKey((myKey)=>{
-                console.log(myKey)
-                $('.menu .item').tab()
-                var source = document.getElementById("entry-template").innerHTML
-                var template = Handlebars.compile(source)
-                var context = {title: "My New Post", body: "This is my first post!"};
-                var html = template(context);
-                $(".handlebars").html(html)
-                getForSale((items)=>{
-                    console.log('forsale', items)
-                    getWalletKey((key)=>{
-                        console.log('key', key)
-                    })
-                })
-            })
-        })
-        
-        function register(cb){
-            $.get( "http://127.0.0.1:3000/register", function(data) {
-                return cb(data)
-            })
-        }
-        function getMyKey(cb){
-            $.get( "http://127.0.0.1:3000/dbkey", function(data) {
-                return cb(data)
-            })
-        } 
-        function getForSale(cb){
-            $.get( "http://127.0.0.1:3000/forsale", function(data) {
-                return cb(data)
-            })
-        }
-        function getWalletKey(cb){
-            $.get( "http://127.0.0.1:3000/getKeys", function(data) {
-                return cb(data)
-            })
-        }
-    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" />
     <script id="entry-template" type="text/x-handlebars-template">
         <div class="entry">
             <h1>{{title}}</h1>
@@ -71,44 +12,358 @@
             </div>
         </div>
     </script>
+    <script id="for-sale-template" type="text/x-handlebars-template">
+        <div class="ui ten column stackable grid">
+            <div class="ten column row {{type}}">
+                {{#each this}}
+                    {{#each this.forsale}}
+                    <div class="four wide column">
+                        <div class="ui card">
+                            <div class="content">
+                                <div class="right floated meta">14h</div>
+                                <img class="floated ui avatar image" src="https://semantic-ui.com/images/avatar2/large/kristy.png"/>
+                                <div class="left floated meta">{{value.emblem}}</div>
+                            </div>
+                            <div class="content">                                
+                                <div class="slick-track" style="width:214px; height: 200px" data-slick='{"slidesToShow": 1, "slidesToScroll": 1}'>
+                                    <div><h3>1</h3></div>
+                                    <div><h3>2</h3></div>
+                                    <div><h3>3</h3></div>
+                                    <div><h3>4</h3></div>
+                                    <div><h3>5</h3></div>
+                                    <div><h3>6</h3></div>
+                                  </div>
+                            </div>
+                            <div class="content">
+                                <span class="right floated">
+                                <i class="heart outline like icon"></i>
+                                0 likes
+                                </span>
+                                <i class="comment icon"></i>
+                                0 comments
+                            </div>
+                            <div class="extra content">
+                                <div class="ui large transparent left icon input">
+                                <i class="heart outline icon"></i>
+                                <input type="text" placeholder="Add Comment..."/>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    {{/each}}
+                {{/each}}
+                </div>
+            </div>   
+    </script>
+    <script id="outgoing-template" type="text/x-handlebars-template">
+        <div class="ui relaxed divided selection list">
+            {{#each this}}
+            <div class="item">
+                <div class="content">
+                    <div class="ui two column stackable grid">
+                        <div class="ten wide column">
+                            <div class="ui checkbox left floated compact">
+                                <input type="checkbox" name="example"/>
+                                <label>To: {{peer}}</label>                                
+                            </div>
+                            <div class="ui">offering <b>{{offer}}</b> in exchange for <b>{{ask}}</b></div>
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>
+            {{/each}}
+        </div>    
+    </script>
+    <script id="incoming-template" type="text/x-handlebars-template">
+        <div class="ui relaxed divided selection list">
+            {{#each this}}
+            <div class="item">
+                <div class="content">
+                    <div class="ui two column stackable grid">
+                        <div class="ten wide column">
+                            <div class="ui checkbox left floated compact">
+                                <input type="checkbox" name="example"/>
+                                <label>From: {{peer}}</label>                                
+                            </div>
+                            <div class="ui">offering <b>{{offer}}</b> in exchange for <b>{{ask}}</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>    
+    </script>
   </head>
   <body>
+      <div class="ui" style="height: 25px"></div>
+      <div class="ui vertical stripe segment">
+      <div class="ui middle aligned stackable grid container">
     <div class="ui top attached tabular menu">
-        <a class="item" data-tab="first">My Emblems</a>
-        <a class="item" data-tab="second">For Sale</a>
-        <a class="item active" data-tab="third">Offers</a>
+        <a class="item active mine" data-tab="first">My Emblem Listings</a>
+        <a class="item all-sale" data-tab="second">All Emblem Listings</a>
+        <a class="item" data-tab="third">Outgoing Offers</a>
+        <a class="item" data-tab="fourth">Incoming Offers</a>
     </div>
-    <div class="ui bottom attached tab segment" data-tab="first">
-        <div class="ui relaxed divided list">
-            <div class="item">
-                <i class="large github middle aligned icon"></i>
-                <div class="content">
-                <a class="header">Semantic-Org/Semantic-UI</a>
-                <div class="description">Updated 10 mins ago</div>
-                </div>
-            </div>
-            <div class="item">
-                <i class="large github middle aligned icon"></i>
-                <div class="content">
-                <a class="header">Semantic-Org/Semantic-UI-Docs</a>
-                <div class="description">Updated 22 mins ago</div>
-                </div>
-            </div>
-            <div class="item">
-                <i class="large github middle aligned icon"></i>
-                <div class="content">
-                <a class="header">Semantic-Org/Semantic-UI-Meteor</a>
-                <div class="description">Updated 34 mins ago</div>
-                </div>
-            </div>
-            </div>
+    <div class="ui bottom attached tab segment active" data-tab="first">
+        <div class="mine-for-sale"></div>
     </div>
     <div class="ui bottom attached tab segment" data-tab="second">
-        <div class="handlebars"></div>
+        <div class="for-sale"></div>
     </div>
-    <div class="ui bottom attached tab segment active" data-tab="third">
-        Third
+    <div class="ui bottom attached tab segment" data-tab="third">
+        <div class="outgoing"></div>
     </div>
-    
+    <div class="ui bottom attached tab segment" data-tab="fourth">
+        <div class="incoming"></div>
+    </div>
+    </div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+    <script>
+        var ws = new WebSocket('ws://35.202.3.15:40510');
+        ws.onopen = function () {
+            console.log('websocket is connected ...')
+            ws.send('connected')
+        }
+        ws.onmessage = function (ev) {
+            var data
+            try {
+                data = JSON.parse(ev.data)
+            } catch (err) {
+                data = ev.data
+            }
+            console.log(data)
+        }
+    </script>
+    <script>
+        var forSale = []
+        var myKey = ""
+        var myAddress = ""
+        
+        register((registration)=>{
+            $('.menu .item').tab()
+                
+               
+            getWalletKey((me)=>{
+                myAddress = me[0].address
+                getMyKey((_myKey)=>{
+                    myKey = _myKey.key
+                    getForSale((items)=>{
+                        forSale = items
+                        getForSaleTemplate( notMine(forSale) )
+                        getMineTemplate( mine(forSale) , ()=>{
+                            $('.mine .slick-track').slick({adaptiveHeight: true})
+                        })
+                        getOutgoingOffersTemplate(notMine(forSale))
+                        getIncomingOffersTemplate(mine(forSale))
+                        getForDemoTemplate()
+                    })
+                })
+            })
+        })
+
+        function mine(arr){
+            return arr.filter(item=>{return item.peer === myKey})
+        }
+        function notMine(arr){
+            return arr.filter(item=>{return item.peer !== myKey})
+        }
+
+        function offers(forkey, items, type, cb){
+            var outgoing = []
+            items.forEach((peer, peerIndex) => {
+                var _forsale = peer.forsale
+                console.log("peer", peer)
+                _forsale.forEach((sale, saleIndex)=> {
+                    console.log("sale", sale)
+                    _offers = sale.offer
+                    _offers.forEach((offer, offerIndex) => {
+                        console.log("offer.key",offer.key, type)
+                        if (type === "outgoing") {
+                            conditional = (offer.value.peer === forkey)
+                        } else {
+                            conditional = (offer.value.peer !== forkey && offer.key.split('/')[0] === forkey)
+                        }
+                        if (conditional) {
+                            var pieces = offer.key.split('/')
+                            var ask = pieces[2]
+                            var peer = pieces[0]
+                            if (type === "incoming") {
+                                peer = offer.value.peer
+                            }
+                            outgoing.push({peer: peer, ask: offer.key.split('/')[2], offer: offer.value.emblem })
+                            if (peerIndex === items.length -1 && saleIndex === _forsale.length -1 && offerIndex === _offers.length -1 ) {
+                                console.log("Returning")
+                                return cb(outgoing)
+                            } else {
+                                /* console.log("peer",peerIndex, items.length -1)
+                                console.log("sale", saleIndex, _forsale.length -1)
+                                console.log("offer", offerIndex, _offers.length -1) */
+                            }
+                        }
+                    })
+                })
+            })
+        }
+
+        function getOutgoingOffersTemplate(items){
+            offers(myKey, items, "outgoing", outgoing => { 
+                console.log("Outgpoing",outgoing)
+                var source = document.getElementById("outgoing-template").innerHTML
+                var template = Handlebars.compile(source)
+                var context = outgoing;
+                var html = template(context);
+                $(".outgoing").html(html)
+            })
+        }
+        function getIncomingOffersTemplate(items){
+            offers(myKey, items, "incoming", incoming => { 
+                console.log("Incoming",incoming)
+                var source = document.getElementById("incoming-template").innerHTML
+                var template = Handlebars.compile(source)
+                var context = incoming;
+                var html = template(context);
+                $(".incoming").html(html)
+            })
+        }
+
+        function getForSaleTemplate(items){            
+            var source = document.getElementById("for-sale-template").innerHTML
+            var template = Handlebars.compile(source)
+            var context = items;
+            context.type = "all"
+            var html = template(context);
+            $(".for-sale").html(html)
+        }
+
+        function getMineTemplate(items, cb){
+            var source = document.getElementById("for-sale-template").innerHTML
+            var template = Handlebars.compile(source)
+            var context = items;
+            context.type = "mine"
+            var html = template(context);
+            $(".mine-for-sale").html(html)
+            return cb()
+        }
+
+        function getForDemoTemplate(){            
+            var source = document.getElementById("entry-template").innerHTML
+            var template = Handlebars.compile(source)
+            var context = {title: "My New Post", body: "This is my first post!"};
+            var html = template(context);
+            $(".handlebars").html(html)
+        }
+        
+        function register(cb){
+            $.get( "http://127.0.0.1:3000/register", function(data) {
+                return cb(data)
+            })
+        }
+        function getMyKey(cb){
+            /* $.get( "http://127.0.0.1:3000/dbkey", function(data) {
+                return cb(data)
+            }) */
+            return cb({key: "alice"})
+        } 
+        function getForSale(cb){
+            /* $.get( "http://127.0.0.1:3000/forsale", function(data) {
+                return cb(data)
+            }) */
+            return cb(mock)
+        }
+        function getWalletKey(cb){
+            $.get( "http://127.0.0.1:3000/getKeys", function(data) {
+                return cb(data)
+            })
+        }
+        $(document).ready(()=>{
+            $('.all-sale').one('click', ()=>{
+                setTimeout(()=>{
+                    $('.all .slick-track').slick({adaptiveHeight: true});
+                }, 10)                
+            })
+            
+        })
+        var mock = [
+    {
+        "peer": "sally",
+        "forsale": [
+            {
+                "key": "sally/forsale/EMB00000000000",
+                "value": {
+                    "emblem": "EMB00000000000"
+                },
+                "offer": [
+                    {
+                        "key": "sally/offer/EMB00000000000",
+                        "value": {
+                            "emblem": "EMB00000000003",
+                            "peer": "alice"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "peer": "bob",
+        "forsale": [
+            {
+                "key": "bob/forsale/EMB00000000001",
+                "value": {
+                    "emblem": "EMB00000000001"
+                },
+                "offer": [
+                    {
+                        "key": "bob/offer/EMB00000000001",
+                        "value": {
+                            "emblem": "EMB00000000003",
+                            "peer": "alice"
+                        }
+                    }
+                ]
+            },
+            {
+                "key": "bob/forsale/EMB00000000002",
+                "value": {
+                    "emblem": "EMB00000000002"
+                },
+                "offer": [
+                    {
+                        "key": "bob/offer/EMB00000000002",
+                        "value": {
+                            "emblem": "EMB00000000003",
+                            "peer": "alice"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "peer": "alice",
+        "forsale": [
+            {
+                "key": "alice/forsale/EMB00000000003",
+                "value": {
+                    "emblem": "EMB00000000003"
+                },
+                "offer": [
+                    {
+                        "key": "alice/offer/EMB00000000003",
+                        "value": {
+                            "emblem": "EMB00000000001",
+                            "peer": "bob"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]
+    </script>
   </body>
 </html>
