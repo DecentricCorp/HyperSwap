@@ -223,27 +223,25 @@
         var myKey = ""
         var myAddress = ""
 
-        //register((registration)=>{
-        $('.menu .item').tab()
-
-
-        getWalletKey((me) => {
-            myAddress = me[0].address
-            getMyKey((_myKey) => {
-                myKey = _myKey.key
-                getForSale((items) => {
-                    forSale = items
-                    getForSaleTemplate(notMine(forSale))
-                    getMineTemplate(mine(forSale), () => {
-                        $('.mine .slick-track').slick({ adaptiveHeight: true })
+        register((registration)=>{
+            $('.menu .item').tab()
+            getWalletKey((me) => {
+                myAddress = me[0].address
+                getMyKey((_myKey) => {
+                    myKey = _myKey.key
+                    getForSale((items) => {
+                        forSale = items
+                        getForSaleTemplate(notMine(forSale))
+                        getMineTemplate(mine(forSale), () => {
+                            $('.mine .slick-track').slick({ adaptiveHeight: true })
+                        })
+                        getOutgoingOffersTemplate(notMine(forSale))
+                        getIncomingOffersTemplate(mine(forSale))
+                        getForDemoTemplate()
                     })
-                    getOutgoingOffersTemplate(notMine(forSale))
-                    getIncomingOffersTemplate(mine(forSale))
-                    getForDemoTemplate()
                 })
             })
         })
-        //})
 
         function mine(arr) {
             return arr.filter(item => { return item.peer === myKey })
@@ -338,10 +336,11 @@
         }
 
         function register(cb) {
-            $.get("http://127.0.0.1:3000/register", function (data) {
+            /* $.get("http://127.0.0.1:3000/register", function (data) {
                 console.log(data)
                 return cb(data)
-            })
+            }) */
+            return cb({})
         }
         function getMyKey(cb) {
             /* $.get( "http://127.0.0.1:3000/dbkey", function(data) {
