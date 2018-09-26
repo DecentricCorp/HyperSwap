@@ -131,6 +131,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
     <script>
+        var urlParams = new URLSearchParams(window.location.search);
+        //let myParam = urlParams.get('myParam');
+        var shouldMock = urlParams.get('mock') === "true";
         var ws = new WebSocket('ws://35.202.3.15:40510');
         ws.onopen = function () {
             console.log('websocket is connected ...')
@@ -342,38 +345,50 @@
         }
 
         function register(cb) {
-            /* $.get("http://127.0.0.1:3000/register", function (data) {
+            if (!shouldMock) {
+            $.get("http://127.0.0.1:3000/register", function (data) {
                 console.log(data)
                 return cb(data)
-            }) */
-            return cb({})
+            })
+            } else {
+                return cb({})
+            }
         }
         function getMyKey(cb) {
-            /* $.get( "http://127.0.0.1:3000/dbkey", function(data) {
+            if (!shouldMock) {
+            $.get( "http://127.0.0.1:3000/dbkey", function(data) {
                 return cb(data)
-            }) */
-            return cb({ key: "alice" })
+            })
+            } else {
+                return cb({ key: "alice" })
+            }
         }
         function getForSale(cb) {
-            /* $.get( "http://127.0.0.1:3000/forsale", function(data) {
+            if (!shouldMock) {
+            $.get( "http://127.0.0.1:3000/forsale", function(data) {
                 return cb(data)
-            }) */
-            return cb(mock)
+            })
+            } else {
+                return cb(mock)
+            }
         }
         function getWalletKey(cb) {
-            /* $.get( "http://127.0.0.1:3000/getKeys", function(data) {
+            if (!shouldMock) {
+            $.get( "http://127.0.0.1:3000/getKeys", function(data) {
                 return cb(data)
-            }) */
-            return cb([
-                {
-                    "address": "1Jh76hEMe2pJS5onmxJM32H3r1sdktLpgR",
-                    "key": "L5T9F2oo68vjj9wCaiAGabCAvioK3cH9auVETeYibtXrSd5TKWe2"
-                },
-                {
-                    "address": "1FfFhshksXfQ8V3dyvYDkZT9LkwuxKEdis",
-                    "key": "L5TmNmgiVj4qwn6vHWtWACCQPhcXJ658xGo7cpfUxupW1ZbDXJF7"
-                }
-            ])
+            })
+            } else {
+                return cb([
+                    {
+                        "address": "1Jh76hEMe2pJS5onmxJM32H3r1sdktLpgR",
+                        "key": "L5T9F2oo68vjj9wCaiAGabCAvioK3cH9auVETeYibtXrSd5TKWe2"
+                    },
+                    {
+                        "address": "1FfFhshksXfQ8V3dyvYDkZT9LkwuxKEdis",
+                        "key": "L5TmNmgiVj4qwn6vHWtWACCQPhcXJ658xGo7cpfUxupW1ZbDXJF7"
+                    }
+                ])
+            }
         }
 
         $(document).ready(() => {
