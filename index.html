@@ -1,6 +1,7 @@
 <html>
-  <head>
-    
+
+<head>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" />
@@ -93,30 +94,31 @@
             {{/each}}
         </div>    
     </script>
-  </head>
-  <body>
-      <div class="ui" style="height: 25px"></div>
-      <div class="ui vertical stripe segment">
-      <div class="ui middle aligned stackable grid container">
-    <div class="ui top attached tabular menu">
-        <a class="item active mine" data-tab="first">My Emblem Listings</a>
-        <a class="item all-sale" data-tab="second">All Emblem Listings</a>
-        <a class="item" data-tab="third">Outgoing Offers</a>
-        <a class="item" data-tab="fourth">Incoming Offers</a>
-    </div>
-    <div class="ui bottom attached tab segment active" data-tab="first">
-        <div class="mine-for-sale"></div>
-    </div>
-    <div class="ui bottom attached tab segment" data-tab="second">
-        <div class="for-sale"></div>
-    </div>
-    <div class="ui bottom attached tab segment" data-tab="third">
-        <div class="outgoing"></div>
-    </div>
-    <div class="ui bottom attached tab segment" data-tab="fourth">
-        <div class="incoming"></div>
-    </div>
-    </div>
+</head>
+
+<body>
+    <div class="ui" style="height: 25px"></div>
+    <div class="ui vertical stripe segment">
+        <div class="ui middle aligned stackable grid container">
+            <div class="ui top attached tabular menu">
+                <a class="item active mine" data-tab="first">My Emblem Listings</a>
+                <a class="item all-sale" data-tab="second">All Emblem Listings</a>
+                <a class="item" data-tab="third">Outgoing Offers</a>
+                <a class="item" data-tab="fourth">Incoming Offers</a>
+            </div>
+            <div class="ui bottom attached tab segment active" data-tab="first">
+                <div class="mine-for-sale"></div>
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="second">
+                <div class="for-sale"></div>
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="third">
+                <div class="outgoing"></div>
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="fourth">
+                <div class="incoming"></div>
+            </div>
+        </div>
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.js"></script>
@@ -136,52 +138,130 @@
                 data = ev.data
             }
             console.log(data)
-        }
+        }           
+    </script>
+    <script>var mock = [
+            {
+                "peer": "sally",
+                "forsale": [
+                    {
+                        "key": "sally/forsale/EMB00000000000",
+                        "value": {
+                            "emblem": "EMB00000000000"
+                        },
+                        "offer": [
+                            {
+                                "key": "sally/offer/EMB00000000000",
+                                "value": {
+                                    "emblem": "EMB00000000003",
+                                    "peer": "alice"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "peer": "bob",
+                "forsale": [
+                    {
+                        "key": "bob/forsale/EMB00000000001",
+                        "value": {
+                            "emblem": "EMB00000000001"
+                        },
+                        "offer": [
+                            {
+                                "key": "bob/offer/EMB00000000001",
+                                "value": {
+                                    "emblem": "EMB00000000003",
+                                    "peer": "alice"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "key": "bob/forsale/EMB00000000002",
+                        "value": {
+                            "emblem": "EMB00000000002"
+                        },
+                        "offer": [
+                            {
+                                "key": "bob/offer/EMB00000000002",
+                                "value": {
+                                    "emblem": "EMB00000000003",
+                                    "peer": "alice"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "peer": "alice",
+                "forsale": [
+                    {
+                        "key": "alice/forsale/EMB00000000003",
+                        "value": {
+                            "emblem": "EMB00000000003"
+                        },
+                        "offer": [
+                            {
+                                "key": "alice/offer/EMB00000000003",
+                                "value": {
+                                    "emblem": "EMB00000000001",
+                                    "peer": "bob"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     </script>
     <script>
         var forSale = []
         var myKey = ""
         var myAddress = ""
-        
-        register((registration)=>{
-            $('.menu .item').tab()
-                
-               
-            getWalletKey((me)=>{
-                myAddress = me[0].address
-                getMyKey((_myKey)=>{
-                    myKey = _myKey.key
-                    getForSale((items)=>{
-                        forSale = items
-                        getForSaleTemplate( notMine(forSale) )
-                        getMineTemplate( mine(forSale) , ()=>{
-                            $('.mine .slick-track').slick({adaptiveHeight: true})
-                        })
-                        getOutgoingOffersTemplate(notMine(forSale))
-                        getIncomingOffersTemplate(mine(forSale))
-                        getForDemoTemplate()
+
+        //register((registration)=>{
+        $('.menu .item').tab()
+
+
+        getWalletKey((me) => {
+            myAddress = me[0].address
+            getMyKey((_myKey) => {
+                myKey = _myKey.key
+                getForSale((items) => {
+                    forSale = items
+                    getForSaleTemplate(notMine(forSale))
+                    getMineTemplate(mine(forSale), () => {
+                        $('.mine .slick-track').slick({ adaptiveHeight: true })
                     })
+                    getOutgoingOffersTemplate(notMine(forSale))
+                    getIncomingOffersTemplate(mine(forSale))
+                    getForDemoTemplate()
                 })
             })
         })
+        //})
 
-        function mine(arr){
-            return arr.filter(item=>{return item.peer === myKey})
+        function mine(arr) {
+            return arr.filter(item => { return item.peer === myKey })
         }
-        function notMine(arr){
-            return arr.filter(item=>{return item.peer !== myKey})
+        function notMine(arr) {
+            return arr.filter(item => { return item.peer !== myKey })
         }
 
-        function offers(forkey, items, type, cb){
+        function offers(forkey, items, type, cb) {
             var outgoing = []
             items.forEach((peer, peerIndex) => {
                 var _forsale = peer.forsale
                 console.log("peer", peer)
-                _forsale.forEach((sale, saleIndex)=> {
+                _forsale.forEach((sale, saleIndex) => {
                     console.log("sale", sale)
                     _offers = sale.offer
                     _offers.forEach((offer, offerIndex) => {
-                        console.log("offer.key",offer.key, type)
+                        console.log("offer.key", offer.key, type)
                         if (type === "outgoing") {
                             conditional = (offer.value.peer === forkey)
                         } else {
@@ -194,8 +274,8 @@
                             if (type === "incoming") {
                                 peer = offer.value.peer
                             }
-                            outgoing.push({peer: peer, ask: offer.key.split('/')[2], offer: offer.value.emblem })
-                            if (peerIndex === items.length -1 && saleIndex === _forsale.length -1 && offerIndex === _offers.length -1 ) {
+                            outgoing.push({ peer: peer, ask: offer.key.split('/')[2], offer: offer.value.emblem })
+                            if (peerIndex === items.length - 1 && saleIndex === _forsale.length - 1 && offerIndex === _offers.length - 1) {
                                 console.log("Returning")
                                 return cb(outgoing)
                             } else {
@@ -209,9 +289,9 @@
             })
         }
 
-        function getOutgoingOffersTemplate(items){
-            offers(myKey, items, "outgoing", outgoing => { 
-                console.log("Outgpoing",outgoing)
+        function getOutgoingOffersTemplate(items) {
+            offers(myKey, items, "outgoing", outgoing => {
+                console.log("Outgpoing", outgoing)
                 var source = document.getElementById("outgoing-template").innerHTML
                 var template = Handlebars.compile(source)
                 var context = outgoing;
@@ -219,9 +299,9 @@
                 $(".outgoing").html(html)
             })
         }
-        function getIncomingOffersTemplate(items){
-            offers(myKey, items, "incoming", incoming => { 
-                console.log("Incoming",incoming)
+        function getIncomingOffersTemplate(items) {
+            offers(myKey, items, "incoming", incoming => {
+                console.log("Incoming", incoming)
                 var source = document.getElementById("incoming-template").innerHTML
                 var template = Handlebars.compile(source)
                 var context = incoming;
@@ -230,7 +310,7 @@
             })
         }
 
-        function getForSaleTemplate(items){            
+        function getForSaleTemplate(items) {
             var source = document.getElementById("for-sale-template").innerHTML
             var template = Handlebars.compile(source)
             var context = items;
@@ -239,7 +319,7 @@
             $(".for-sale").html(html)
         }
 
-        function getMineTemplate(items, cb){
+        function getMineTemplate(items, cb) {
             var source = document.getElementById("for-sale-template").innerHTML
             var template = Handlebars.compile(source)
             var context = items;
@@ -249,38 +329,33 @@
             return cb()
         }
 
-        function getForDemoTemplate(){            
+        function getForDemoTemplate() {
             var source = document.getElementById("entry-template").innerHTML
             var template = Handlebars.compile(source)
-            var context = {title: "My New Post", body: "This is my first post!"};
+            var context = { title: "My New Post", body: "This is my first post!" };
             var html = template(context);
             $(".handlebars").html(html)
         }
-        
-        function register(cb){
-            $.get( "http://127.0.0.1:3000/register", function(data) {
+
+        function register(cb) {
+            $.get("http://127.0.0.1:3000/register", function (data) {
                 console.log(data)
-                //return cb(data)
-                return cb({
-                    "address": "1Jh76hEMe2pJS5onmxJM32H3r1sdktLpgR",
-                    "databasekey": "141fcab5567de99287f5863982a0d475c933ba125b4e0be7b24a76678344e3ea"
-                })
+                return cb(data)
             })
-            
         }
-        function getMyKey(cb){
+        function getMyKey(cb) {
             /* $.get( "http://127.0.0.1:3000/dbkey", function(data) {
                 return cb(data)
             }) */
-            return cb({key: "alice"})
-        } 
-        function getForSale(cb){
+            return cb({ key: "alice" })
+        }
+        function getForSale(cb) {
             /* $.get( "http://127.0.0.1:3000/forsale", function(data) {
                 return cb(data)
             }) */
             return cb(mock)
         }
-        function getWalletKey(cb){
+        function getWalletKey(cb) {
             /* $.get( "http://127.0.0.1:3000/getKeys", function(data) {
                 return cb(data)
             }) */
@@ -295,91 +370,16 @@
                 }
             ])
         }
-        $(document).ready(()=>{
-            $('.all-sale').one('click', ()=>{
-                setTimeout(()=>{
-                    $('.all .slick-track').slick({adaptiveHeight: true});
-                }, 10)                
+
+        $(document).ready(() => {
+            $('.all-sale').one('click', () => {
+                setTimeout(() => {
+                    $('.all .slick-track').slick({ adaptiveHeight: true });
+                }, 10)
             })
-            
-        })
-        var mock = [
-    {
-        "peer": "sally",
-        "forsale": [
-            {
-                "key": "sally/forsale/EMB00000000000",
-                "value": {
-                    "emblem": "EMB00000000000"
-                },
-                "offer": [
-                    {
-                        "key": "sally/offer/EMB00000000000",
-                        "value": {
-                            "emblem": "EMB00000000003",
-                            "peer": "alice"
-                        }
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "peer": "bob",
-        "forsale": [
-            {
-                "key": "bob/forsale/EMB00000000001",
-                "value": {
-                    "emblem": "EMB00000000001"
-                },
-                "offer": [
-                    {
-                        "key": "bob/offer/EMB00000000001",
-                        "value": {
-                            "emblem": "EMB00000000003",
-                            "peer": "alice"
-                        }
-                    }
-                ]
-            },
-            {
-                "key": "bob/forsale/EMB00000000002",
-                "value": {
-                    "emblem": "EMB00000000002"
-                },
-                "offer": [
-                    {
-                        "key": "bob/offer/EMB00000000002",
-                        "value": {
-                            "emblem": "EMB00000000003",
-                            "peer": "alice"
-                        }
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "peer": "alice",
-        "forsale": [
-            {
-                "key": "alice/forsale/EMB00000000003",
-                "value": {
-                    "emblem": "EMB00000000003"
-                },
-                "offer": [
-                    {
-                        "key": "alice/offer/EMB00000000003",
-                        "value": {
-                            "emblem": "EMB00000000001",
-                            "peer": "bob"
-                        }
-                    }
-                ]
-            }
-        ]
-    }
-]
+
+        })    
     </script>
-  </body>
+</body>
+
 </html>
