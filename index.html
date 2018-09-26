@@ -259,8 +259,14 @@
         
         function register(cb){
             $.get( "http://127.0.0.1:3000/register", function(data) {
-                return cb(data)
+                console.log(data)
+                //return cb(data)
+                return cb({
+                    "address": "1Jh76hEMe2pJS5onmxJM32H3r1sdktLpgR",
+                    "databasekey": "141fcab5567de99287f5863982a0d475c933ba125b4e0be7b24a76678344e3ea"
+                })
             })
+            
         }
         function getMyKey(cb){
             /* $.get( "http://127.0.0.1:3000/dbkey", function(data) {
@@ -275,9 +281,19 @@
             return cb(mock)
         }
         function getWalletKey(cb){
-            $.get( "http://127.0.0.1:3000/getKeys", function(data) {
+            /* $.get( "http://127.0.0.1:3000/getKeys", function(data) {
                 return cb(data)
-            })
+            }) */
+            return cb([
+                {
+                    "address": "1Jh76hEMe2pJS5onmxJM32H3r1sdktLpgR",
+                    "key": "L5T9F2oo68vjj9wCaiAGabCAvioK3cH9auVETeYibtXrSd5TKWe2"
+                },
+                {
+                    "address": "1FfFhshksXfQ8V3dyvYDkZT9LkwuxKEdis",
+                    "key": "L5TmNmgiVj4qwn6vHWtWACCQPhcXJ658xGo7cpfUxupW1ZbDXJF7"
+                }
+            ])
         }
         $(document).ready(()=>{
             $('.all-sale').one('click', ()=>{
